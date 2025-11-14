@@ -17,47 +17,44 @@
 
 ```bash
 📦 com.example.mentoring
- ┣ 📂 auth (인증/권한)
+ ┣ 📂 auth (인증 및 권한 관리)
  ┃ ┣ 📂 controller
  ┃ ┣ 📂 service
  ┃ ┣ 📂 repository
  ┃ ┣ 📂 entity (Token)
  ┃ ┗ 📂 dto
- ┣ 📂 member (사용자/회원 관리)
+ ┣ 📂 member (사용자 및 프로필 관리)
  ┃ ┣ 📂 controller
  ┃ ┣ 📂 service
  ┃ ┣ 📂 repository
  ┃ ┣ 📂 entity (User, MentorProfile, MenteeProfile)
  ┃ ┗ 📂 dto
- ┣ 📂 post (멘토 모집 게시글)
+ ┣ 📂 match (핵심 도메인: 모집, 신청, 세션 관리)
  ┃ ┣ 📂 controller
  ┃ ┣ 📂 service
  ┃ ┣ 📂 repository
- ┃ ┣ 📂 entity (Post, Tag, PostTag)
+ ┃ ┣ 📂 entity (Post, Tag, PostTag, Application, Session)
  ┃ ┗ 📂 dto
- ┣ 📂 match (매칭 및 멘토링 상태 관리)
- ┃ ┣ 📂 controller
- ┃ ┣ 📂 service
- ┃ ┣ 📂 repository
- ┃ ┣ 📂 entity (MentoringApplication, MentoringSession)
- ┃ ┃ ┗ 📂 dto
  ┣ 📂 chat (실시간 채팅)
  ┃ ┣ 📂 controller
  ┃ ┣ 📂 service
  ┃ ┣ 📂 repository
  ┃ ┣ 📂 entity (ChatRoom, ChatMessage)
  ┃ ┗ 📂 handler (WebSocket)
- ┣ 📂 review (멘토링 평가)
+ ┣ 📂 review (멘토링 평가 및 리뷰)
  ┃ ┣ 📂 controller
  ┃ ┣ 📂 service
  ┃ ┣ 📂 repository
  ┃ ┣ 📂 entity (Review)
  ┃ ┗ 📂 dto
- ┗ 📂 global (공통 설정/유틸리티)
-    ┣ 📂 config (설정 및 빈 정의)
-    ┣ 📂 entity (CommonCode)
-    ┣ 📂 error 
-    ┗ 📂 util 
+ ┣ 📂 systemcode (시스템 코드 관리: 직무, 레벨 등)
+ ┃ ┣ 📂 repository
+ ┃ ┣ 📂 entity (SystemCode)
+ ┃ ┗ 📂 dto
+ ┗ 📂 global (전역 설정 및 유틸리티)
+   ┣ 📂 config (설정 및 빈 정의)
+   ┣ 📂 error 
+   ┗ 📂 util
 ```
 
 ---
