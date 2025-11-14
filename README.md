@@ -9,55 +9,52 @@
 
 * **ERD (데이터베이스 구조):** [[ERD Cloud Link](https://www.erdcloud.com/d/ZmqG7SLdaRJftfra7)]
 * **주요 기능:** 사용자 관리, 멘토 모집/검색, 매칭/진행, 실시간 채팅
-* **기술 스택:** (Spring Boot, MySQL, WebSocket 등, 추가로 Redis, Elasticsearch 고려 중)
+* **기술 스택:** (Spring Boot, MySQL, Redis, WebSocket, 추가로 Elasticsearch 고려 중)
 
 ---
 
-#### 📦 주요 도메인 패키지 구조
+### 📦 주요 도메인 패키지 구조
 
 ```bash
 📦 com.example.mentoring
- ┣ 📂 auth (인증/권한)
+ ┣ 📂 auth (인증 및 권한 관리)
  ┃ ┣ 📂 controller
  ┃ ┣ 📂 service
  ┃ ┣ 📂 repository
  ┃ ┣ 📂 entity (Token)
  ┃ ┗ 📂 dto
- ┣ 📂 member (사용자/회원 관리)
+ ┣ 📂 member (사용자 및 프로필 관리)
  ┃ ┣ 📂 controller
  ┃ ┣ 📂 service
  ┃ ┣ 📂 repository
  ┃ ┣ 📂 entity (User, MentorProfile, MenteeProfile)
  ┃ ┗ 📂 dto
- ┣ 📂 post (멘토 모집 게시글)
+ ┣ 📂 match (핵심 도메인: 모집, 신청, 세션 관리)
  ┃ ┣ 📂 controller
  ┃ ┣ 📂 service
  ┃ ┣ 📂 repository
- ┃ ┣ 📂 entity (Post, Tag, PostTag)
+ ┃ ┣ 📂 entity (Post, Tag, PostTag, Application, Session)
  ┃ ┗ 📂 dto
- ┣ 📂 match (매칭 및 멘토링 상태 관리)
- ┃ ┣ 📂 controller
- ┃ ┣ 📂 service
- ┃ ┣ 📂 repository
- ┃ ┣ 📂 entity (MentoringApplication, MentoringSession)
- ┃ ┃ ┗ 📂 dto
  ┣ 📂 chat (실시간 채팅)
  ┃ ┣ 📂 controller
  ┃ ┣ 📂 service
  ┃ ┣ 📂 repository
  ┃ ┣ 📂 entity (ChatRoom, ChatMessage)
  ┃ ┗ 📂 handler (WebSocket)
- ┣ 📂 review (멘토링 평가)
+ ┣ 📂 review (멘토링 평가 및 리뷰)
  ┃ ┣ 📂 controller
  ┃ ┣ 📂 service
  ┃ ┣ 📂 repository
  ┃ ┣ 📂 entity (Review)
  ┃ ┗ 📂 dto
- ┗ 📂 global (공통 설정/유틸리티)
-    ┣ 📂 config (설정 및 빈 정의)
-    ┣ 📂 entity (CommonCode)
-    ┣ 📂 error 
-    ┗ 📂 util 
+ ┣ 📂 code (시스템 코드 관리: 직무, 레벨 등)
+ ┃ ┣ 📂 repository
+ ┃ ┣ 📂 entity (Code)
+ ┃ ┗ 📂 dto
+ ┗ 📂 global (전역 설정 및 유틸리티)
+   ┣ 📂 config (설정 및 빈 정의)
+   ┣ 📂 error 
+   ┗ 📂 util
 ```
 
 ---
@@ -82,7 +79,7 @@
 * **카테고리/태그 관리:**
     * **기술 스택, 경력, 멘토링 주제** 등의 태그를 등록하고 조회할 수 있어 검색의 정확도를 높입니다.
 * **멘토링 검색 및 필터링:**
-    * **제목, 내용, 태그**를 포함하는 강력한 **검색 및 필터링** 기능을 제공하여 원하는 멘토링을 쉽게 찾을 수 있습니다.
+    * **제목, 내용, 태그**를 포함하는 **검색 및 필터링** 기능을 제공하여 원하는 멘토링을 쉽게 찾을 수 있습니다.
 * **모집 상태 관리:**
     * 게시글의 상태를 `모집 중` 또는 `매칭 완료`로 변경하고 마감 처리할 수 있습니다.
 
