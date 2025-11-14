@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # MySQL
+  db:
+    image: mysql:8.0
+    container_name: mentoring-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mentoring_db
+      TZ: Asia/Seoul
+    command: # MySQL 기본 인코딩 설정
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql # 데이터 영속성 유지
+    restart: always
+
+  # Redis
+  redis:
+    image: redis:7.0-alpine
+    container_name: mentoring-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data # 데이터 영속성 유지
+    restart: always
+
+# 볼륨 정의
+volumes:
+  db_data:
+  redis_data:
+
