@@ -29,7 +29,7 @@
  ┃ ┣ 📂 repository
  ┃ ┣ 📂 entity (User, MentorProfile, MenteeProfile)
  ┃ ┗ 📂 dto
- ┣ 📂 match (핵심 도메인: 모집, 신청, 세션 관리)
+ ┣ 📂 match (모집, 신청, 세션 관리)
  ┃ ┣ 📂 controller
  ┃ ┣ 📂 service
  ┃ ┣ 📂 repository
@@ -47,9 +47,9 @@
  ┃ ┣ 📂 repository
  ┃ ┣ 📂 entity (Review)
  ┃ ┗ 📂 dto
- ┣ 📂 code (시스템 코드 관리: 직무, 레벨 등)
+ ┣ 📂 systemcode (시스템 코드 관리: 직무, 레벨 등)
  ┃ ┣ 📂 repository
- ┃ ┣ 📂 entity (Code)
+ ┃ ┣ 📂 entity (SystemCode)
  ┃ ┗ 📂 dto
  ┗ 📂 global (전역 설정 및 유틸리티)
    ┣ 📂 config (설정 및 빈 정의)
