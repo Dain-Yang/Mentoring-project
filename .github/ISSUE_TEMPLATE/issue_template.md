@@ -1,5 +1,5 @@
 ---
-name: 이슈 생성 템플릿
+name: issue_template
 about: 해당 이슈 생성 템플릿을 사용하여 Todo List 작성
 title: Feature
 labels: ''
