@@ -13,6 +13,55 @@
 
 ---
 
+#### 📦 주요 도메인 패키지 구조
+
+```bash
+📦 com.example.mentoring
+ ┣ 📂 auth (인증/권한)
+ ┃ ┣ 📂 controller
+ ┃ ┣ 📂 service
+ ┃ ┣ 📂 repository
+ ┃ ┣ 📂 entity (Token)
+ ┃ ┗ 📂 dto
+ ┣ 📂 member (사용자/회원 관리)
+ ┃ ┣ 📂 controller
+ ┃ ┣ 📂 service
+ ┃ ┣ 📂 repository
+ ┃ ┣ 📂 entity (User, MentorProfile, MenteeProfile)
+ ┃ ┗ 📂 dto
+ ┣ 📂 post (멘토 모집 게시글)
+ ┃ ┣ 📂 controller
+ ┃ ┣ 📂 service
+ ┃ ┣ 📂 repository
+ ┃ ┣ 📂 entity (Post, Tag, PostTag)
+ ┃ ┗ 📂 dto
+ ┣ 📂 match (매칭 및 멘토링 상태 관리)
+ ┃ ┣ 📂 controller
+ ┃ ┣ 📂 service
+ ┃ ┣ 📂 repository
+ ┃ ┣ 📂 entity (MentoringApplication, MentoringSession)
+ ┃ ┃ ┗ 📂 dto
+ ┣ 📂 chat (실시간 채팅)
+ ┃ ┣ 📂 controller
+ ┃ ┣ 📂 service
+ ┃ ┣ 📂 repository
+ ┃ ┣ 📂 entity (ChatRoom, ChatMessage)
+ ┃ ┗ 📂 handler (WebSocket)
+ ┣ 📂 review (멘토링 평가)
+ ┃ ┣ 📂 controller
+ ┃ ┣ 📂 service
+ ┃ ┣ 📂 repository
+ ┃ ┣ 📂 entity (Review)
+ ┃ ┗ 📂 dto
+ ┗ 📂 global (공통 설정/유틸리티)
+    ┣ 📂 config (설정 및 빈 정의)
+    ┣ 📂 entity (CommonCode)
+    ┣ 📂 error 
+    ┗ 📂 util 
+```
+
+---
+
 ### 🌟 주요 기능
 
 본 플랫폼은 사용자 관리, 멘토 모집, 매칭 진행, 그리고 실시간 채팅 기능을 중심으로 구축되었습니다.
