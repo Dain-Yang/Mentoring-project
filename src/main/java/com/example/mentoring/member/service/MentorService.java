@@ -9,7 +9,8 @@ import com.example.mentoring.member.repository.MentorProfileRepository;
 import com.example.mentoring.member.repository.UserRepository;
 import com.example.mentoring.systemcode.entity.SystemCode;
 import com.example.mentoring.systemcode.repository.SystemCodeRepository;
-import lombok.*;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

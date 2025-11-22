@@ -5,7 +5,8 @@ import com.example.mentoring.member.dto.UpdateUserRequest;
 import com.example.mentoring.member.dto.UserResponse;
 import com.example.mentoring.member.entity.User;
 import com.example.mentoring.member.repository.UserRepository;
-import lombok.*;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

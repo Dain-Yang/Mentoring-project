@@ -1,10 +1,13 @@
 package com.example.mentoring.member.entity;
 
 import com.example.mentoring.systemcode.entity.SystemCode;
-import lombok.*;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "mentor_profile")

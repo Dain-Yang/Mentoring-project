@@ -7,7 +7,7 @@ import com.example.mentoring.auth.dto.TokenResponse;
 import com.example.mentoring.global.util.JwtUtil;
 import com.example.mentoring.member.entity.User;
 import com.example.mentoring.member.repository.UserRepository;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

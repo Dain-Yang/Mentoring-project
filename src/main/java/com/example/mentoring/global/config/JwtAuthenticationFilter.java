@@ -1,8 +1,8 @@
 package com.example.mentoring.global.config;
 
+import lombok.RequiredArgsConstructor;
 import com.example.mentoring.auth.service.CustomUserDetailsService;
 import com.example.mentoring.global.util.JwtUtil;
-import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +20,10 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+  // 매직 넘버와 매직 스트링을 상수로 정의
+  private static final String AUTHORIZATION_HEADER = "Authorization";
+  private static final String BEARER_PREFIX = "Bearer ";
 
   private final JwtUtil jwtUtil;
   private final CustomUserDetailsService userDetailsService;
@@ -56,9 +60,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   }
 
   private String getJwtFromRequest(HttpServletRequest request) {
-    String bearerToken = request.getHeader("Authorization");
-    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-      return bearerToken.substring(7);
+
+    String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+
+    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+      return bearerToken.substring(BEARER_PREFIX.length());
     }
     return null;
   }

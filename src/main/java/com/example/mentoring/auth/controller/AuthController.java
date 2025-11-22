@@ -5,7 +5,8 @@ import com.example.mentoring.auth.dto.LoginResponse;
 import com.example.mentoring.auth.dto.TokenRefreshRequest;
 import com.example.mentoring.auth.dto.TokenResponse;
 import com.example.mentoring.auth.service.AuthService;
-import lombok.*;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

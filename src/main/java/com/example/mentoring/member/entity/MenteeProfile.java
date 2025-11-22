@@ -1,7 +1,10 @@
 package com.example.mentoring.member.entity;
 
 import com.example.mentoring.systemcode.entity.SystemCode;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 
