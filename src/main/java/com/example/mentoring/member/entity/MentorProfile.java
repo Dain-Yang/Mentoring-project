@@ -1,8 +1,18 @@
 package com.example.mentoring.member.entity;
 
-import com.example.mentoring.systemcode.entity.SystemCode;
+import com.example.mentoring.global.code.FieldCode;
+import com.example.mentoring.global.code.LevelCode;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,18 +48,17 @@ public class MentorProfile {
   @Column(length = 50)
   private String company;
 
-  // 시스템 코드는 지연 로딩으로 처리
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "field_code_id", nullable = false)
-  private SystemCode fieldCode;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "field_code", nullable = false)
+  private FieldCode fieldCode;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "level_code_id", nullable = false)
-  private SystemCode levelCode;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "level_code", nullable = false)
+  private LevelCode levelCode;
 
   // 비즈니스 메서드
   public void updateProfile(String mentorBio, Integer careerYears, String company,
-      SystemCode fieldCode, SystemCode levelCode) {
+      FieldCode fieldCode, LevelCode levelCode) {
     this.mentorBio = mentorBio;
     this.careerYears = careerYears;
     this.company = company;

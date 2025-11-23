@@ -1,9 +1,12 @@
 package com.example.mentoring.member.dto;
 
+import com.example.mentoring.member.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor
@@ -17,5 +20,18 @@ public class UserResponse {
   private String nickname;
   private String role;
   private Boolean isActive;
-  private String createdAt; // LocalDateTime을 String으로 포맷팅하여 반환
+  private String createdAt;
+
+  // Entity -> DTO 변환 로직 정적 팩토리 메서드로 이동
+  public static UserResponse from(User user) {
+    return UserResponse.builder()
+        .id(user.getId())
+        .email(user.getEmail())
+        .nickname(user.getNickname())
+        .role(user.getRole().name())
+        .isActive(user.getIsActive())
+        // 날짜 포맷팅 로직 처리
+        .createdAt(user.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+        .build();
+  }
 }

@@ -43,7 +43,7 @@ public class MemberService {
 
     User savedUser = userRepository.save(user);
 
-    return convertToUserResponse(savedUser);
+    return UserResponse.from(savedUser);
   }
 
   // 사용자 정보 수정
@@ -64,24 +64,14 @@ public class MemberService {
       user.updatePassword(passwordEncoder.encode(request.getPassword()));
     }
 
-    return convertToUserResponse(user);
+    return UserResponse.from(user);
   }
 
   // 사용자 정보 조회
   public UserResponse getUserById(Integer userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다"));
-    return convertToUserResponse(user);
+    return UserResponse.from(user);
   }
 
-  private UserResponse convertToUserResponse(User user) {
-    return UserResponse.builder()
-        .id(user.getId())
-        .email(user.getEmail())
-        .nickname(user.getNickname())
-        .role(user.getRole().name())
-        .isActive(user.getIsActive())
-        .createdAt(user.getCreatedAt().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-        .build();
-  }
 }

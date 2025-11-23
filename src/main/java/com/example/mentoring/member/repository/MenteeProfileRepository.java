@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface MenteeProfileRepository extends JpaRepository<MenteeProfile, Integer> {
-  List<MenteeProfile> findByFieldCode_Id(Integer fieldCodeId);
-  List<MenteeProfile> findByLevelCode_Id(Integer levelCodeId);
+
 }

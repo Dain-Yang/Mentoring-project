@@ -7,9 +7,8 @@ import com.example.mentoring.member.entity.MentorProfile;
 import com.example.mentoring.member.entity.User;
 import com.example.mentoring.member.repository.MentorProfileRepository;
 import com.example.mentoring.member.repository.UserRepository;
-import com.example.mentoring.systemcode.entity.SystemCode;
-import com.example.mentoring.systemcode.repository.SystemCodeRepository;
-
+import com.example.mentoring.global.code.FieldCode;
+import com.example.mentoring.global.code.LevelCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,27 +22,25 @@ public class MentorService {
 
   private final UserRepository userRepository;
   private final MentorProfileRepository mentorProfileRepository;
-  private final SystemCodeRepository systemCodeRepository;
 
   // 멘토 프로필 생성
   @Transactional
   public MentorProfileResponse createMentorProfile(Integer userId, CreateMentorProfileRequest request) {
     User user = userRepository.findById(userId)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다"));
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. ID: " + userId));
 
     // 역할 검증
     if (user.getRole() != User.Role.MENTOR) {
-      throw new IllegalArgumentException("멘토 권한이 없습니다");
+      throw new IllegalArgumentException("멘토 권한이 없는 사용자입니다.");
     }
 
     if (mentorProfileRepository.existsById(userId)) {
-      throw new IllegalArgumentException("이미 멘토 프로필이 존재합니다");
+      throw new IllegalArgumentException("이미 멘토 프로필이 존재합니다.");
     }
 
-    SystemCode fieldCode = systemCodeRepository.findById(request.getFieldCodeId())
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 직무 코드입니다"));
-    SystemCode levelCode = systemCodeRepository.findById(request.getLevelCodeId())
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 레벨 코드입니다"));
+
+    FieldCode fieldCode = FieldCode.fromValue(request.getFieldCode());
+    LevelCode levelCode = LevelCode.fromValue(request.getLevelCode());
 
     // 멘토 프로필 생성
     MentorProfile mentorProfile = MentorProfile.builder()
@@ -65,16 +62,15 @@ public class MentorService {
   @Transactional
   public MentorProfileResponse updateMentorProfile(Integer userId, UpdateMentorProfileRequest request) {
     MentorProfile profile = mentorProfileRepository.findById(userId)
-        .orElseThrow(() -> new IllegalArgumentException("멘토 프로필이 존재하지 않습니다"));
+        .orElseThrow(() -> new IllegalArgumentException("멘토 프로필이 존재하지 않습니다. ID: " + userId));
 
-    SystemCode fieldCode = request.getFieldCodeId() != null
-        ? systemCodeRepository.findById(request.getFieldCodeId())
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 직무 코드입니다"))
+    // 값이 있을 때만 Enum 변환, 없으면 기존 값 유지
+    FieldCode fieldCode = (request.getFieldCode() != null && !request.getFieldCode().isEmpty())
+        ? FieldCode.fromValue(request.getFieldCode())
         : profile.getFieldCode();
 
-    SystemCode levelCode = request.getLevelCodeId() != null
-        ? systemCodeRepository.findById(request.getLevelCodeId())
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 레벨 코드입니다"))
+    LevelCode levelCode = (request.getLevelCode() != null && !request.getLevelCode().isEmpty())
+        ? LevelCode.fromValue(request.getLevelCode())
         : profile.getLevelCode();
 
     profile.updateProfile(
@@ -91,7 +87,7 @@ public class MentorService {
   // 멘토 프로필 조회
   public MentorProfileResponse getMentorProfile(Integer userId) {
     MentorProfile profile = mentorProfileRepository.findById(userId)
-        .orElseThrow(() -> new IllegalArgumentException("멘토 프로필이 존재하지 않습니다"));
+        .orElseThrow(() -> new IllegalArgumentException("멘토 프로필이 존재하지 않습니다. ID: " + userId));
     return convertToMentorProfileResponse(profile);
   }
 
@@ -99,7 +95,7 @@ public class MentorService {
     return MentorProfileResponse.builder()
         .userId(profile.getUserId())
         .mentorBio(profile.getMentorBio())
-        .avgRating(Double.valueOf(profile.getAvgRating().toString()))
+        .avgRating(profile.getAvgRating() != null ? profile.getAvgRating().doubleValue() : 0.0)
         .careerYears(profile.getCareerYears())
         .company(profile.getCompany())
         .fieldCode(profile.getFieldCode().getDisplayName())

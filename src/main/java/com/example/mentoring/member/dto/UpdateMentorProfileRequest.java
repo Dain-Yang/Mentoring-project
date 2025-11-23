@@ -15,6 +15,6 @@ public class UpdateMentorProfileRequest {
   private String mentorBio;
   private Integer careerYears;
   private String company;
-  private Integer fieldCodeId;
-  private Integer levelCodeId;
+  private String fieldCode;
+  private String levelCode;
 }

@@ -1,12 +1,22 @@
 package com.example.mentoring.member.entity;
 
-import com.example.mentoring.systemcode.entity.SystemCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
+import com.example.mentoring.global.code.FieldCode;
+import com.example.mentoring.global.code.LevelCode;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "mentee_profile")
@@ -27,17 +37,17 @@ public class MenteeProfile {
   @Column(nullable = false, columnDefinition = "TEXT")
   private String menteeBio;
 
-  // 시스템 코드는 지연 로딩으로 처리
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "field_code_id", nullable = false)
-  private SystemCode fieldCode;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "level_code_id", nullable = false)
-  private SystemCode levelCode;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "field_code", nullable = false)
+  private FieldCode fieldCode;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "level_code", nullable = false)
+  private LevelCode levelCode;
 
   // 비즈니스 메서드
-  public void updateProfile(String menteeBio, SystemCode fieldCode, SystemCode levelCode) {
+  public void updateProfile(String menteeBio, FieldCode fieldCode, LevelCode levelCode) {
     this.menteeBio = menteeBio;
     this.fieldCode = fieldCode;
     this.levelCode = levelCode;

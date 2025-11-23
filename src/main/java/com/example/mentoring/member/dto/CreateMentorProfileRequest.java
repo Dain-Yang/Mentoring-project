@@ -22,8 +22,8 @@ public class CreateMentorProfileRequest {
   private String company;
 
   @NotNull(message = "직무를 선택해 주세요")
-  private Integer fieldCodeId;
+  private String fieldCode;
 
   @NotNull(message = "기술 수준을 선택해 주세요")
-  private Integer levelCodeId;
+  private String levelCode;
 }

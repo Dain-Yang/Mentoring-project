@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface MentorProfileRepository extends JpaRepository<MentorProfile, Integer> {
-  List<MentorProfile> findByFieldCode_Id(Integer fieldCodeId);
-  List<MentorProfile> findByLevelCode_Id(Integer levelCodeId);
-  List<MentorProfile> findAllByOrderByAvgRatingDesc();
+
 }
