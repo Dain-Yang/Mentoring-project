@@ -34,13 +34,14 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
+	// 테스트 코드용 의존성
+	testImplementation("org.projectlombok:lombok")
+	testAnnotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-	// JWT
-	implementation ("io.jsonwebtoken:jjwt-api:0.12.5")
-	runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.12.5")
-	runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.12.5")
+	// JWT 간소화
+	implementation ("io.jsonwebtoken:jjwt:0.12.5")
 }
 
 tasks.withType<Test> {
