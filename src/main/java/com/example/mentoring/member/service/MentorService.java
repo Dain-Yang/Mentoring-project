@@ -1,0 +1,94 @@
+package com.example.mentoring.member.service;
+
+import com.example.mentoring.member.dto.CreateMentorProfileRequest;
+import com.example.mentoring.member.dto.MentorProfileResponse;
+import com.example.mentoring.member.dto.UpdateMentorProfileRequest;
+import com.example.mentoring.member.entity.MentorProfile;
+import com.example.mentoring.member.entity.User;
+import com.example.mentoring.member.repository.MentorProfileRepository;
+import com.example.mentoring.member.repository.UserRepository;
+import com.example.mentoring.global.code.FieldCode;
+import com.example.mentoring.global.code.LevelCode;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class MentorService {
+
+  private final UserRepository userRepository;
+  private final MentorProfileRepository mentorProfileRepository;
+
+  // 멘토 프로필 생성
+  @Transactional
+  public MentorProfileResponse createMentorProfile(Integer userId, CreateMentorProfileRequest request) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. ID: " + userId));
+
+    // 역할 검증
+    if (user.getRole() != User.Role.MENTOR) {
+      throw new IllegalArgumentException("멘토 권한이 없는 사용자입니다.");
+    }
+
+    if (mentorProfileRepository.existsById(userId)) {
+      throw new IllegalArgumentException("이미 멘토 프로필이 존재합니다.");
+    }
+
+
+    FieldCode fieldCode = FieldCode.fromValue(request.getFieldCode());
+    LevelCode levelCode = LevelCode.fromValue(request.getLevelCode());
+
+    // 멘토 프로필 생성
+    MentorProfile mentorProfile = MentorProfile.builder()
+        .user(user)
+        .mentorBio(request.getMentorBio())
+        .careerYears(request.getCareerYears())
+        .company(request.getCompany())
+        .fieldCode(fieldCode)
+        .levelCode(levelCode)
+        .avgRating(BigDecimal.ZERO)
+        .build();
+
+    MentorProfile saved = mentorProfileRepository.save(mentorProfile);
+
+    return MentorProfileResponse.from(saved);
+  }
+
+  // 멘토 프로필 수정
+  @Transactional
+  public MentorProfileResponse updateMentorProfile(Integer userId, UpdateMentorProfileRequest request) {
+    MentorProfile profile = mentorProfileRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("멘토 프로필이 존재하지 않습니다. ID: " + userId));
+
+    // 값이 있을 때만 Enum 변환, 없으면 기존 값 유지
+    FieldCode fieldCode = (request.getFieldCode() != null && !request.getFieldCode().isEmpty())
+        ? FieldCode.fromValue(request.getFieldCode())
+        : profile.getFieldCode();
+
+    LevelCode levelCode = (request.getLevelCode() != null && !request.getLevelCode().isEmpty())
+        ? LevelCode.fromValue(request.getLevelCode())
+        : profile.getLevelCode();
+
+    profile.updateProfile(
+        request.getMentorBio() != null ? request.getMentorBio() : profile.getMentorBio(),
+        request.getCareerYears() != null ? request.getCareerYears() : profile.getCareerYears(),
+        request.getCompany() != null ? request.getCompany() : profile.getCompany(),
+        fieldCode,
+        levelCode
+    );
+
+    return MentorProfileResponse.from(profile);
+  }
+
+  // 멘토 프로필 조회
+  public MentorProfileResponse getMentorProfile(Integer userId) {
+    MentorProfile profile = mentorProfileRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("멘토 프로필이 존재하지 않습니다. ID: " + userId));
+    return MentorProfileResponse.from(profile);
+  }
+
+}
