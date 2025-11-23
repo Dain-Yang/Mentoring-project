@@ -29,14 +29,6 @@ public class AuthController {
     return ResponseEntity.ok(response);
   }
 
-  // 토큰 재발급 (Refresh)
-  @PostMapping("/refresh")
-  public ResponseEntity<TokenResponse> refresh(@Valid @RequestBody TokenRefreshRequest request) {
-    TokenResponse response = authService.refresh(request);
-    return ResponseEntity.ok(response);
-  }
-
-
   // 로그아웃
   @PostMapping("/logout")
   public ResponseEntity<Void> logout() {

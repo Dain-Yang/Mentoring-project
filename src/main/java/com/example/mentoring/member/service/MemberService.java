@@ -74,4 +74,17 @@ public class MemberService {
     return UserResponse.from(user);
   }
 
+  // 회원 탈퇴 (Soft Delete)
+  @Transactional
+  public void withdraw(Integer userId, String password) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다"));
+
+    if (!passwordEncoder.matches(password, user.getPassword())) {
+      throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
+    }
+
+    user.deactivate();
+  }
+
 }

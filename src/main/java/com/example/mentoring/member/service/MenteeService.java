@@ -44,7 +44,7 @@ public class MenteeService {
 
     MenteeProfile saved = menteeProfileRepository.save(menteeProfile);
 
-    return convertToMenteeProfileResponse(saved);
+    return MenteeProfileResponse.from(saved);
   }
 
   // 멘티 프로필 수정
@@ -68,22 +68,14 @@ public class MenteeService {
         levelCode
     );
 
-    return convertToMenteeProfileResponse(profile);
+    return MenteeProfileResponse.from(profile);
   }
 
   // 멘티 프로필 조회
   public MenteeProfileResponse getMenteeProfile(Integer userId) {
     MenteeProfile profile = menteeProfileRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("멘티 프로필이 존재하지 않습니다"));
-    return convertToMenteeProfileResponse(profile);
+    return MenteeProfileResponse.from(profile);
   }
 
-  private MenteeProfileResponse convertToMenteeProfileResponse(MenteeProfile profile) {
-    return MenteeProfileResponse.builder()
-        .userId(profile.getUserId())
-        .menteeBio(profile.getMenteeBio())
-        .fieldCode(profile.getFieldCode().getDisplayName())
-        .levelCode(profile.getLevelCode().getDisplayName())
-        .build();
-  }
 }

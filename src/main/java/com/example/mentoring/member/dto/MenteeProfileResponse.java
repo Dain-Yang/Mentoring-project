@@ -1,5 +1,6 @@
 package com.example.mentoring.member.dto;
 
+import com.example.mentoring.member.entity.MenteeProfile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,4 +18,13 @@ public class MenteeProfileResponse {
   // SystemCode의 display_name 반환
   private String fieldCode;
   private String levelCode;
+
+  public static MenteeProfileResponse from(MenteeProfile profile) {
+    return MenteeProfileResponse.builder()
+        .userId(profile.getUserId())
+        .menteeBio(profile.getMenteeBio())
+        .fieldCode(profile.getFieldCode().getDisplayName())
+        .levelCode(profile.getLevelCode().getDisplayName())
+        .build();
+  }
 }

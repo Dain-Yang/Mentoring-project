@@ -22,7 +22,6 @@ public class AuthService {
 
   private final AuthenticationManager authenticationManager;
   private final JwtUtil jwtUtil;
-  private final UserRepository userRepository; // for 토큰 재발급
 
   // 로그인
   public LoginResponse login(LoginRequest request) {
@@ -52,29 +51,6 @@ public class AuthService {
         .build();
   }
 
-  // 토큰 재발급
-  public TokenResponse refresh(TokenRefreshRequest request) {
-    String refreshToken = request.getRefreshToken();
-
-    // Refresh Token 유효성 검증
-    if (!jwtUtil.validateToken(refreshToken)) {
-      throw new IllegalArgumentException("유효하지 않은 리프레시 토큰입니다");
-    }
-
-    // 사용자 ID 추출 및 DB 조회
-    Integer userId = jwtUtil.getUserIdFromToken(refreshToken);
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다"));
-
-    // 새 Access Token 생성
-    String newAccessToken = jwtUtil.createAccessToken(user.getId(), user.getEmail(), user.getRole());
-
-    // 응답 (Access Token만 반환)
-    return TokenResponse.builder()
-        .accessToken(newAccessToken)
-        .tokenType("Bearer")
-        .build();
-  }
 
   // 로그아웃
   public void logout() {

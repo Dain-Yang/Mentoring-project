@@ -55,7 +55,7 @@ public class MentorService {
 
     MentorProfile saved = mentorProfileRepository.save(mentorProfile);
 
-    return convertToMentorProfileResponse(saved);
+    return MentorProfileResponse.from(saved);
   }
 
   // 멘토 프로필 수정
@@ -81,25 +81,14 @@ public class MentorService {
         levelCode
     );
 
-    return convertToMentorProfileResponse(profile);
+    return MentorProfileResponse.from(profile);
   }
 
   // 멘토 프로필 조회
   public MentorProfileResponse getMentorProfile(Integer userId) {
     MentorProfile profile = mentorProfileRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("멘토 프로필이 존재하지 않습니다. ID: " + userId));
-    return convertToMentorProfileResponse(profile);
+    return MentorProfileResponse.from(profile);
   }
 
-  private MentorProfileResponse convertToMentorProfileResponse(MentorProfile profile) {
-    return MentorProfileResponse.builder()
-        .userId(profile.getUserId())
-        .mentorBio(profile.getMentorBio())
-        .avgRating(profile.getAvgRating() != null ? profile.getAvgRating().doubleValue() : 0.0)
-        .careerYears(profile.getCareerYears())
-        .company(profile.getCompany())
-        .fieldCode(profile.getFieldCode().getDisplayName())
-        .levelCode(profile.getLevelCode().getDisplayName())
-        .build();
-  }
 }

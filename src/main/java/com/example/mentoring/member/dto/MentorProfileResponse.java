@@ -1,5 +1,6 @@
 package com.example.mentoring.member.dto;
 
+import com.example.mentoring.member.entity.MentorProfile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,4 +21,17 @@ public class MentorProfileResponse {
   // SystemCode의 display_name 반환
   private String fieldCode;
   private String levelCode;
+
+  public static MentorProfileResponse from(MentorProfile profile) {
+    return MentorProfileResponse.builder()
+        .userId(profile.getUserId())
+        .mentorBio(profile.getMentorBio())
+        // BigDecimal -> Double 변환 및 null 처리 로직
+        .avgRating(profile.getAvgRating() != null ? profile.getAvgRating().doubleValue() : 0.0)
+        .careerYears(profile.getCareerYears())
+        .company(profile.getCompany())
+        .fieldCode(profile.getFieldCode().getDisplayName())
+        .levelCode(profile.getLevelCode().getDisplayName())
+        .build();
+  }
 }
