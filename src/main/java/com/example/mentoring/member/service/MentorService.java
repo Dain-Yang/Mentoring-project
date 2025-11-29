@@ -29,11 +29,6 @@ public class MentorService {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. ID: " + userId));
 
-    // 역할 검증
-    if (user.getRole() != User.Role.MENTOR) {
-      throw new IllegalArgumentException("멘토 권한이 없는 사용자입니다.");
-    }
-
     if (mentorProfileRepository.existsById(userId)) {
       throw new IllegalArgumentException("이미 멘토 프로필이 존재합니다.");
     }

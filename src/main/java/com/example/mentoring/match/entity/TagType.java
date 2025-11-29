@@ -12,13 +12,4 @@ public enum TagType {
 
   private final String description;
 
-  // String -> Enum 변환 메서드
-  public static TagType from(String value) {
-    for (TagType type : TagType.values()) {
-      if (type.name().equals(value)) {
-        return type;
-      }
-    }
-    throw new IllegalArgumentException("유효하지 않은 태그 타입입니다: " + value);
-  }
 }
