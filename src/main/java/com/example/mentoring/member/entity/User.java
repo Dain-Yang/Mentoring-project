@@ -29,6 +29,10 @@ public class User {
   public enum Role {
     MENTOR,
     MENTEE;
+
+    public String getAuthority() {
+      return "ROLE_" + this.name();
+    }
   }
 
   @Id

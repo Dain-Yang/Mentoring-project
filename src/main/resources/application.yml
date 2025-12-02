@@ -20,6 +20,8 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+        default_batch_fetch_size: 100 # 연관된 리스트(컬렉션)를 조회할 때 IN 쿼리로 한 번에 가져옴
     show-sql: true
     open-in-view: false
 
