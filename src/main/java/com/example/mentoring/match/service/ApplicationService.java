@@ -35,8 +35,8 @@ public class ApplicationService {
     Post post = postRepository.findById(postId)
         .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
 
-    if (!post.getStatus()) {
-      throw new IllegalStateException("모집이 완료된 게시글입니다.");
+    if (!post.isRecruiting()) {
+      throw new IllegalStateException("모집이 마감된 게시글입니다.");
     }
 
     if (applicationRepository.existsByPostAndUser(post, user)) {

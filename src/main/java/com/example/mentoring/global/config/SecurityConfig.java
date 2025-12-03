@@ -76,6 +76,7 @@ public class SecurityConfig {
             //post GET 요청을 먼저 처리해야 하고 아랫줄에서 더 구체적인 규칙을 적용
 
             .requestMatchers("/application/mentor/{applicationId}/**").hasAuthority(MENTOR_AUTHORITY)
+            .requestMatchers("/application/post/{postId}").hasAuthority(MENTOR_AUTHORITY)
 
             // 그 외 모든 요청은 로그인만 되어있으면 통과
             .anyRequest().authenticated()

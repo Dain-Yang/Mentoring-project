@@ -15,17 +15,4 @@ public class CreateApplicationRequest {
 
   @NotBlank(message = "신청 내용은 필수입니다")
   private String content;
-
-  public static ApplicationSummaryResponse from(Application application) {
-    return ApplicationSummaryResponse.builder()
-        .id(application.getId())
-        .postId(application.getPost().getId())
-        .postTitle(application.getPost().getTitle())
-        .mentorNickname(application.getPost().getUser().getNickname())
-        .menteeNickname(application.getUser().getNickname())
-        .status(application.getStatus())
-        .statusDescription(application.getStatus().getDescription())
-        .appliedAt(application.getAppliedAt())
-        .build();
-  }
 }
