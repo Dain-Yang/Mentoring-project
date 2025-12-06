@@ -59,9 +59,9 @@ public class Post {
   @Column(nullable = false, columnDefinition = "TEXT")
   private String content;
 
-  @Column(name = "is_recruiting", nullable = false)
+  @Column(nullable = false)
   @Builder.Default
-  private Boolean isRecruiting = true; // TRUE: 모집 중, FALSE: 모집 완료
+  private Boolean status = true; // TRUE: 모집 중, FALSE: 모집 완료
 
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
@@ -89,16 +89,12 @@ public class Post {
     this.levelCode = levelCode;
   }
 
-  public boolean isRecruiting() {
-    return Boolean.TRUE.equals(this.isRecruiting);
-  }
-
   public void closeRecruitment() {
-    this.isRecruiting = false;
+    this.status = false;
   }
 
   public void openRecruitment() {
-    this.isRecruiting = true;
+    this.status = true;
   }
 
   // 연관관계 편의 메서드 (태그 추가)

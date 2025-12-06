@@ -52,7 +52,7 @@ public class PostService {
         .content(request.getContent())
         .fieldCode(fieldCode)
         .levelCode(levelCode)
-        .isRecruiting(true)
+        .status(true)
         .build();
 
     // 태그 저장
