@@ -1,5 +1,7 @@
 package com.example.mentoring.match.service;
 
+import com.example.mentoring.match.event.ApplicationApprovedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import com.example.mentoring.match.dto.ApplicationResponse;
 import com.example.mentoring.match.dto.ApplicationSummaryResponse;
 import com.example.mentoring.match.dto.CreateApplicationRequest;
@@ -26,6 +28,9 @@ public class ApplicationService {
   private final ApplicationRepository applicationRepository;
   private final PostRepository postRepository;
   private final UserRepository userRepository; // User 조회를 위해 추가
+
+  // 멘토링 승인 시 이벤트 발생
+  private final ApplicationEventPublisher eventPublisher;
 
   @Transactional
   public ApplicationResponse createApplication(Integer postId, Integer userId, CreateApplicationRequest request) {
@@ -134,7 +139,10 @@ public class ApplicationService {
       throw new IllegalStateException("본인의 게시글에 대한 신청서만 승인할 수 있습니다.");
     }
 
+    // 승인 처리 -> 이벤트 발행
     application.approve();
+    eventPublisher.publishEvent(new ApplicationApprovedEvent(application));
+
     return ApplicationResponse.from(application);
   }
 

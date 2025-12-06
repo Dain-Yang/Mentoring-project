@@ -21,7 +21,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
   // 메인 게시판: 모집 중인 글(태그 매핑 + 실제 태그) 조회 + 작성자 정보 즉시 로딩
   @EntityGraph(attributePaths = {"user", "postTags", "postTags.tag"})
-  Page<Post> findByStatusTrueOrderByCreatedAtDesc(Pageable pageable);
+  Page<Post> findByIsRecruitingTrueOrderByCreatedAtDesc(Pageable pageable);
 
   // 상세 조회: 작성자와 태그들을 모두 한 번에 조회
   @EntityGraph(attributePaths = {"user", "postTags", "postTags.tag"})

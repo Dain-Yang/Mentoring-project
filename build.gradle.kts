@@ -42,6 +42,8 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	// JWT 간소화
 	implementation ("io.jsonwebtoken:jjwt:0.12.5")
+	// Java 8 Date/Time (LocalDateTime) 직렬화
+	implementation ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 }
 
 tasks.withType<Test> {
