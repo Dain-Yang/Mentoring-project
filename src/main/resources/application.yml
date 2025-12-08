@@ -62,7 +62,7 @@ data:
       port: ${SPRING_REDIS_PORT}
       password: ${SPRING_REDIS_PASSWORD}
       # Upstash SSL 설정
-      ssl: ${SPRING_REDIS_USE_SSL}
+      ssl: true
 
   jpa:
     hibernate:
