@@ -9,7 +9,7 @@ RUN chmod +x ./gradlew
 
 RUN ./gradlew clean build -x test --no-daemon
 
-FROM openjdk:17-jdk-slim AS runtime
+FROM amazoncorretto:17-alpine AS runtime
 
 WORKDIR /app
 
@@ -19,4 +19,5 @@ EXPOSE 8080
 
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
 
