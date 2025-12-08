@@ -1,5 +1,5 @@
 
-FROM gradle:8.5-jdk AS builder
+FROM gradle:8.5-jdk21 AS builder
 
 WORKDIR /app
 
@@ -19,6 +19,7 @@ EXPOSE 8080
 
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
 
 
 
