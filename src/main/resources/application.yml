@@ -1,7 +1,26 @@
+
 spring:
   application:
     name: mentoring-project
 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Seoul
+
+jwt:
+  secret: ZGF5b25lLXNwcmluZy1ib290LWRpdmlkZW5kLXByb2plY3QtdHV0b3JpYWwtand0LXNlY3JldC1rZXkK
+  access-token-validity: 1800000
+  refresh-token-validity: 1209600000
+
+server:
+  port: 8080
+
+---
+spring:
+  config:
+    activate:
+      on-profile: default
+      
   datasource:
     url: jdbc:mysql://localhost:3306/mentoring_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
@@ -21,18 +40,35 @@ spring:
         format_sql: true
         show_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
-        default_batch_fetch_size: 100 # 연관된 리스트(컬렉션)를 조회할 때 IN 쿼리로 한 번에 가져옴
+        default_batch_fetch_size: 100
     show-sql: true
     open-in-view: false
 
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: Asia/Seoul
+---
+spring:
+  config:
+    activate:
+      on-profile: h2-prod
 
-jwt:
-  secret: ZGF5b25lLXNwcmluZy1ib290LWRpdmlkZW5kLXByb2plY3QtdHV0b3JpYWwtand0LXNlY3JldC1rZXkK
-  access-token-validity: 1800000
-  refresh-token-validity: 1209600000
+  datasource:
+    url: jdbc:h2:mem:mentoring_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
 
-server:
-  port: 8080
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: 6379
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.H2Dialect 
+        default_batch_fetch_size: 100
+    show-sql: true
+    open-in-view: false
