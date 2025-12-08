@@ -62,7 +62,8 @@ spring:
       port: ${SPRING_REDIS_PORT}
       password: ${SPRING_REDIS_PASSWORD}
       # Upstash SSL 설정
-      ssl: true
+      ssl:
+        enabled: true
 
   jpa:
     hibernate:
