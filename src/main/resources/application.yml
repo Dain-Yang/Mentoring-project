@@ -56,10 +56,13 @@ spring:
     password: 
     driver-class-name: org.h2.Driver
 
-  data:
+data:
     redis:
-      host: ${SPRING_REDIS_HOST:localhost}
-      port: 6379
+      host: ${SPRING_REDIS_HOST}
+      port: ${SPRING_REDIS_PORT}
+      password: ${SPRING_REDIS_PASSWORD}
+      # Upstash SSL 설정
+      ssl: ${SPRING_REDIS_USE_SSL}
 
   jpa:
     hibernate:
