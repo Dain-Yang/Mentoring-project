@@ -9,7 +9,7 @@ RUN chmod +x ./gradlew
 
 RUN ./gradlew clean build -x test --no-daemon
 
-FROM openjdk:21-jdk-slim
+FROM openjdk:21-jdk-alpine AS runtime
 
 WORKDIR /app
 
