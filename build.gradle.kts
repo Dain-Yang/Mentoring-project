@@ -26,7 +26,8 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	runtimeOnly("com.mysql:mysql-connector-j") // 최신 버전의 MySQL 커넥터 의존성
+	// runtimeOnly("com.mysql:mysql-connector-j") // 최신 버전의 MySQL 커넥터 의존성
+	implementation("com.h2database:h2")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -40,7 +41,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-	testImplementation("com.h2database:h2") // 테스트용 DB
+	// testImplementation("com.h2database:h2") // 테스트용 DB
 	// JWT 간소화
 	implementation ("io.jsonwebtoken:jjwt:0.12.5")
 	// Java 8 Date/Time (LocalDateTime) 직렬화
