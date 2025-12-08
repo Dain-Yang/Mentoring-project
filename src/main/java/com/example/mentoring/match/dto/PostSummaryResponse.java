@@ -30,7 +30,7 @@ public class PostSummaryResponse {
         .fieldName(post.getFieldCode().getDisplayName())
         .levelName(post.getLevelCode().getDisplayName())
         .title(post.getTitle())
-        .status(post.getStatus())
+        .status(post.isRecruiting())
         .applicationCount(post.getApplications().size())
         .createdAt(post.getCreatedAt())
         .build();

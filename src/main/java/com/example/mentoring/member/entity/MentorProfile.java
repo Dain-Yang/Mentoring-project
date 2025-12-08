@@ -14,6 +14,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +29,7 @@ import lombok.NoArgsConstructor;
 public class MentorProfile {
 
   @Id
-  private Integer userId;
+  private UUID userId;
 
   @OneToOne
   @MapsId
@@ -41,6 +42,11 @@ public class MentorProfile {
   @Column(nullable = false, precision = 2, scale = 1)
   @Builder.Default
   private BigDecimal avgRating = BigDecimal.ZERO; // BigDecimal for 데이터 무결성
+
+  // 리뷰 개수 필드
+  @Column(nullable = false)
+  @Builder.Default
+  private Long reviewCount = 0L;
 
   @Column(nullable = false)
   private Integer careerYears;
@@ -66,7 +72,9 @@ public class MentorProfile {
     this.levelCode = levelCode;
   }
 
-  public void updateAvgRating(BigDecimal newRating) {
-    this.avgRating = newRating;
+  // 멘토 평점 및 개수 업데이트 메서드
+  public void updateRating(BigDecimal avgRating, Long reviewCount) {
+    this.avgRating = avgRating;
+    this.reviewCount = reviewCount;
   }
 }

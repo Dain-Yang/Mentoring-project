@@ -52,7 +52,7 @@ public class PostResponse {
             .levelName(post.getLevelCode().getDisplayName())
             .title(post.getTitle())
             .content(post.getContent())
-            .status(post.getStatus())
+            .status(post.isRecruiting())
             .tags(tagResponses)
             .createdAt(post.getCreatedAt())
             .updatedAt(post.getUpdatedAt())

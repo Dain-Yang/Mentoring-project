@@ -9,6 +9,7 @@ import com.example.mentoring.member.entity.MenteeProfile;
 import com.example.mentoring.member.entity.User;
 import com.example.mentoring.member.repository.MenteeProfileRepository;
 import com.example.mentoring.member.repository.UserRepository;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ public class MenteeService {
 
   // 멘티 프로필 생성
   @Transactional
-  public MenteeProfileResponse createMenteeProfile(Integer userId, CreateMenteeProfileRequest request) {
+  public MenteeProfileResponse createMenteeProfile(UUID userId, CreateMenteeProfileRequest request) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다"));
 
@@ -49,7 +50,7 @@ public class MenteeService {
 
   // 멘티 프로필 수정
   @Transactional
-  public MenteeProfileResponse updateMenteeProfile(Integer userId, UpdateMenteeProfileRequest request) {
+  public MenteeProfileResponse updateMenteeProfile(UUID userId, UpdateMenteeProfileRequest request) {
     MenteeProfile profile = menteeProfileRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("멘티 프로필이 존재하지 않습니다"));
 
@@ -72,7 +73,7 @@ public class MenteeService {
   }
 
   // 멘티 프로필 조회
-  public MenteeProfileResponse getMenteeProfile(Integer userId) {
+  public MenteeProfileResponse getMenteeProfile(UUID userId) {
     MenteeProfile profile = menteeProfileRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("멘티 프로필이 존재하지 않습니다"));
     return MenteeProfileResponse.from(profile);

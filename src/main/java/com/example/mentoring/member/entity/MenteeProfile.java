@@ -1,5 +1,6 @@
 package com.example.mentoring.member.entity;
 
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +28,7 @@ import jakarta.persistence.Table;
 public class MenteeProfile {
 
   @Id
-  private Integer userId;
+  private UUID userId;
 
   @OneToOne
   @MapsId

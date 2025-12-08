@@ -130,7 +130,7 @@ public class PostService {
 
   // 페이징 적용: 메인 페이지 조회
   public Page<PostResponse> getAllPosts(Pageable pageable) {
-    return postRepository.findByStatusTrueOrderByCreatedAtDesc(pageable)
+    return postRepository.findByIsRecruitingTrueOrderByCreatedAtDesc(pageable)
         .map(PostResponse::from);
   }
 
