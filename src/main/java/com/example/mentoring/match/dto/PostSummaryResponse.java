@@ -2,6 +2,7 @@ package com.example.mentoring.match.dto;
 
 import com.example.mentoring.match.entity.Post;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

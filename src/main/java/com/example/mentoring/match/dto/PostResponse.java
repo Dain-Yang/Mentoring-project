@@ -4,6 +4,7 @@ package com.example.mentoring.match.dto;
 import com.example.mentoring.match.entity.Post;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,7 @@ public class PostResponse {
   // 게시글 응답 (상세) DTO
 
     private Integer id;
-    private Integer userId;
+    private UUID userId;
     private String nickname; // 작성자 닉네임
 
     private String fieldCode;

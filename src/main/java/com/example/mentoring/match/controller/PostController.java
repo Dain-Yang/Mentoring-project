@@ -4,11 +4,12 @@ import com.example.mentoring.auth.service.AuthService;
 import com.example.mentoring.auth.service.CustomUserDetails;
 import com.example.mentoring.match.dto.CreatePostRequest;
 import com.example.mentoring.match.dto.PostResponse;
+import com.example.mentoring.match.dto.PostSearchCondition;
 import com.example.mentoring.match.dto.PostSummaryResponse;
 import com.example.mentoring.match.dto.UpdatePostRequest;
 import com.example.mentoring.match.service.PostService;
-import com.example.mentoring.member.entity.User;
 import jakarta.validation.Valid; // 필수 Import
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -76,9 +77,23 @@ public class PostController {
     return ResponseEntity.ok(responses);
   }
 
+  @GetMapping("/search")
+  public ResponseEntity<Page<PostResponse>> searchPosts(
+      @RequestParam(required = false) String keyword,
+      @RequestParam(required = false) List<Integer> tagIds,
+      @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+    PostSearchCondition condition = new PostSearchCondition();
+    condition.setKeyword(keyword);
+    condition.setTagIds(tagIds);
+
+    Page<PostResponse> result = postService.searchPosts(condition, pageable);
+    return ResponseEntity.ok(result);
+  }
+
   // 특정 유저(멘토)가 작성한 게시글 목록 조회
   @GetMapping("/list/{userId}")
-  public ResponseEntity<List<PostSummaryResponse>> getPostsByUserId(@PathVariable Integer userId) {
+  public ResponseEntity<List<PostSummaryResponse>> getPostsByUserId(@PathVariable UUID userId) {
 
     List<PostSummaryResponse> responses = postService.getPostsByUserId(userId);
 

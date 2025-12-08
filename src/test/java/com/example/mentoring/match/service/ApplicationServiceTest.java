@@ -7,6 +7,7 @@ import com.example.mentoring.match.event.ApplicationApprovedEvent;
 import com.example.mentoring.match.repository.ApplicationRepository;
 import com.example.mentoring.member.entity.User;
 import com.example.mentoring.member.repository.UserRepository;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +41,7 @@ class ApplicationServiceTest {
   @DisplayName("멘토링 신청 승인 성공 및 이벤트 발행 테스트")
   void approveApplication_Success() {
     // given
-    Integer applicationId = 1;
+    UUID applicationId = 1;
     Integer mentorId = 10;
     Integer menteeId = 20;
 
