@@ -20,7 +20,7 @@ spring:
   config:
     activate:
       on-profile: default
-      
+
   datasource:
     url: jdbc:mysql://localhost:3306/mentoring_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
@@ -53,17 +53,8 @@ spring:
   datasource:
     url: jdbc:h2:mem:mentoring_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
-    password: 
+    password:
     driver-class-name: org.h2.Driver
-
-  data:
-    redis:
-      host: ${SPRING_REDIS_HOST}
-      port: ${SPRING_REDIS_PORT}
-      password: ${SPRING_REDIS_PASSWORD}
-      # Upstash SSL 설정
-      ssl:
-        enabled: true
 
   jpa:
     hibernate:
@@ -72,7 +63,7 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-        dialect: org.hibernate.dialect.H2Dialect 
+        dialect: org.hibernate.dialect.H2Dialect
         default_batch_fetch_size: 100
     show-sql: true
     open-in-view: false
