@@ -56,7 +56,7 @@ spring:
     password: 
     driver-class-name: org.h2.Driver
 
-data:
+  data:
     redis:
       host: ${SPRING_REDIS_HOST}
       port: ${SPRING_REDIS_PORT}
