@@ -2,6 +2,7 @@ package com.example.mentoring.match.entity;
 
 import com.example.mentoring.global.code.FieldCode;
 import com.example.mentoring.global.code.LevelCode;
+import com.example.mentoring.global.entity.BaseEntity;
 import com.example.mentoring.member.entity.User;
 
 import jakarta.persistence.CascadeType;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Post {
+public class Post extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

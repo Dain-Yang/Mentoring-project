@@ -40,10 +40,16 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("com.h2database:h2") // 테스트용 DB
 	// JWT 간소화
 	implementation ("io.jsonwebtoken:jjwt:0.12.5")
 	// Java 8 Date/Time (LocalDateTime) 직렬화
 	implementation ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+	// QueryDSL
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
 }
 
 tasks.withType<Test> {

@@ -6,6 +6,8 @@ import com.example.mentoring.match.dto.CreatePostRequest;
 import com.example.mentoring.match.dto.PostResponse;
 import com.example.mentoring.match.dto.PostSummaryResponse;
 import com.example.mentoring.member.repository.UserRepository;
+import com.example.mentoring.member.entity.MentorProfile;
+import com.example.mentoring.member.repository.MentorProfileRepository;
 import com.example.mentoring.match.dto.UpdatePostRequest;
 import com.example.mentoring.match.entity.Post;
 import com.example.mentoring.match.entity.PostTag;
@@ -14,11 +16,14 @@ import com.example.mentoring.match.repository.PostRepository;
 import com.example.mentoring.match.repository.TagRepository;
 import com.example.mentoring.member.entity.User;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.mentoring.match.dto.PostSearchCondition;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,9 +36,10 @@ public class PostService {
   private final PostRepository postRepository;
   private final TagRepository tagRepository;
   private final UserRepository userRepository;
+  private final MentorProfileRepository mentorProfileRepository;
 
   @Transactional
-  public PostResponse createPost(Integer userId, CreatePostRequest request) {
+  public PostResponse createPost(UUID userId, CreatePostRequest request) {
     // userId를 사용하여 User 객체 조회
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("작성자(User)를 찾을 수 없습니다."));
@@ -42,8 +48,18 @@ public class PostService {
       throw new IllegalStateException("멘토만 모집글을 작성할 수 있습니다.");
     }
 
+    // 멘토 프로필 조회 및 레벨 검증 로직
+    MentorProfile mentorProfile = mentorProfileRepository.findByUserId(userId)
+        .orElseThrow(() -> new EntityNotFoundException("멘토 프로필을 찾을 수 없습니다."));
+
+    LevelCode requestLevel = LevelCode.fromValue(request.getLevelCode());
+
+    // 요청한 레벨이 멘토의 레벨보다 높으면 예외 발생 (Enum의 순서 비교)
+    if (requestLevel.compareTo(mentorProfile.getLevelCode()) > 0) {
+      throw new IllegalArgumentException("본인의 멘토 레벨보다 높은 레벨의 모집글은 작성할 수 없습니다.");
+    }
+
     FieldCode fieldCode = FieldCode.fromValue(request.getFieldCode());
-    LevelCode levelCode = LevelCode.fromValue(request.getLevelCode());
 
     // Post 객체 생성
     Post post = Post.builder()
@@ -51,7 +67,7 @@ public class PostService {
         .title(request.getTitle())
         .content(request.getContent())
         .fieldCode(fieldCode)
-        .levelCode(levelCode)
+        .levelCode(requestLevel)
         .isRecruiting(true)
         .build();
 
@@ -74,7 +90,7 @@ public class PostService {
 
   // 게시글 수정
   @Transactional
-  public PostResponse updatePost(Integer postId, Integer userId, UpdatePostRequest request) {
+  public PostResponse updatePost(Integer postId, UUID userId, UpdatePostRequest request) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 
@@ -85,10 +101,18 @@ public class PostService {
       throw new IllegalStateException("본인이 작성한 게시글만 수정할 수 있습니다.");
     }
 
-    FieldCode fieldCode = FieldCode.fromValue(request.getFieldCode());
-    LevelCode levelCode = LevelCode.fromValue(request.getLevelCode());
+    MentorProfile mentorProfile = mentorProfileRepository.findByUserId(userId)
+        .orElseThrow(() -> new EntityNotFoundException("멘토 프로필을 찾을 수 없습니다."));
 
-    post.updatePost(request.getTitle(), request.getContent(), fieldCode, levelCode);
+    LevelCode requestLevel = LevelCode.fromValue(request.getLevelCode());
+
+    if (requestLevel.compareTo(mentorProfile.getLevelCode()) > 0) {
+      throw new IllegalArgumentException("본인의 멘토 레벨보다 높은 레벨로 수정할 수 없습니다.");
+    }
+
+    FieldCode fieldCode = FieldCode.fromValue(request.getFieldCode());
+
+    post.updatePost(request.getTitle(), request.getContent(), fieldCode, requestLevel);
 
     // 태그 업데이트 (기존 태그 삭제 후 재생성)
     post.clearPostTags();
@@ -108,7 +132,7 @@ public class PostService {
 
   // 게시글 삭제
   @Transactional
-  public void deletePost(Integer postId, Integer userId) {
+  public void deletePost(Integer postId, UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 
@@ -128,14 +152,20 @@ public class PostService {
     return PostResponse.from(post);
   }
 
+
   // 페이징 적용: 메인 페이지 조회
   public Page<PostResponse> getAllPosts(Pageable pageable) {
     return postRepository.findByIsRecruitingTrueOrderByCreatedAtDesc(pageable)
         .map(PostResponse::from);
   }
 
+  // 검색 및 필터링
+  public Page<PostResponse> searchPosts(PostSearchCondition condition, Pageable pageable) {
+    return postRepository.search(condition, pageable);
+  }
+
   // 유저 글 목록 조회
-  public List<PostSummaryResponse> getPostsByUserId(Integer userId) {
+  public List<PostSummaryResponse> getPostsByUserId(UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 
@@ -146,7 +176,7 @@ public class PostService {
 
   // 모집 마감
   @Transactional
-  public void closeRecruitment(Integer postId, Integer userId) {
+  public void closeRecruitment(Integer postId, UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 
@@ -161,7 +191,7 @@ public class PostService {
 
   // 모집 재개
   @Transactional
-  public void openRecruitment(Integer postId, Integer userId) {
+  public void openRecruitment(Integer postId, UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 
