@@ -1,5 +1,6 @@
 package com.example.mentoring.member.entity;
 
+import com.example.mentoring.global.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class User extends BaseEntity {
 
   public enum Role {
     MENTOR,
@@ -54,10 +55,6 @@ public class User {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 20)
   private Role role;
-
-  @CreationTimestamp
-  @Column(nullable = false, updatable = false)
-  private LocalDateTime createdAt;
 
   @Column(nullable = false)
   @Builder.Default
