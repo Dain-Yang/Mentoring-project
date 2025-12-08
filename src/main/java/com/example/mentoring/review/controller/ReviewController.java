@@ -6,7 +6,8 @@ import com.example.mentoring.review.dto.ReviewSummaryResponse;
 import com.example.mentoring.review.dto.UpdateReviewRequest;
 import com.example.mentoring.review.dto.UserRatingResponse;
 import com.example.mentoring.review.service.ReviewService;
-import jakarta.validation.Valid; // [필수] 유효성 검사를 위해 추가
+import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,8 +32,8 @@ public class ReviewController {
   // 리뷰 작성
   @PostMapping("/session/{sessionId}")
   public ResponseEntity<ReviewResponse> createReview(
-      @PathVariable Integer sessionId,
-      @AuthenticationPrincipal Integer userId,
+      @PathVariable UUID sessionId,
+      @AuthenticationPrincipal UUID userId,
       @Valid @RequestBody CreateReviewRequest request) {
     ReviewResponse response = reviewService.createReview(sessionId, userId, request);
     return ResponseEntity.ok(response);
@@ -42,7 +43,7 @@ public class ReviewController {
   @PutMapping("/{reviewId}")
   public ResponseEntity<ReviewResponse> updateReview(
       @PathVariable Integer reviewId,
-      @AuthenticationPrincipal Integer userId,
+      @AuthenticationPrincipal UUID userId,
       @Valid @RequestBody UpdateReviewRequest request) {
     ReviewResponse response = reviewService.updateReview(reviewId, userId, request);
     return ResponseEntity.ok(response);
@@ -52,7 +53,7 @@ public class ReviewController {
   @DeleteMapping("/{reviewId}")
   public ResponseEntity<Void> deleteReview(
       @PathVariable Integer reviewId,
-      @AuthenticationPrincipal Integer userId) {
+      @AuthenticationPrincipal UUID userId) {
     reviewService.deleteReview(reviewId, userId);
     return ResponseEntity.noContent().build();
   }
@@ -66,7 +67,7 @@ public class ReviewController {
 
   // 세션의 모든 리뷰 조회
   @GetMapping("/session/{sessionId}")
-  public ResponseEntity<List<ReviewResponse>> getReviewsBySession(@PathVariable Integer sessionId) {
+  public ResponseEntity<List<ReviewResponse>> getReviewsBySession(@PathVariable UUID sessionId) {
     List<ReviewResponse> responses = reviewService.getReviewsBySession(sessionId);
     return ResponseEntity.ok(responses);
   }
@@ -74,7 +75,7 @@ public class ReviewController {
   // 받은 리뷰 목록 조회
   @GetMapping("/user/{userId}/received")
   public ResponseEntity<List<ReviewSummaryResponse>> getReceivedReviews(
-      @PathVariable Integer userId) {
+      @PathVariable UUID userId) {
     List<ReviewSummaryResponse> responses = reviewService.getReceivedReviews(userId);
     return ResponseEntity.ok(responses);
   }
@@ -82,7 +83,7 @@ public class ReviewController {
   // 작성한 리뷰 목록 조회
   @GetMapping("/user/{userId}/written")
   public ResponseEntity<List<ReviewSummaryResponse>> getWrittenReviews(
-      @PathVariable Integer userId) {
+      @PathVariable UUID userId) {
     List<ReviewSummaryResponse> responses = reviewService.getWrittenReviews(userId);
     return ResponseEntity.ok(responses);
   }
@@ -90,7 +91,7 @@ public class ReviewController {
   // 내가 받은 리뷰 목록 조회 (편의 기능)
   @GetMapping("/my/received")
   public ResponseEntity<List<ReviewSummaryResponse>> getMyReceivedReviews(
-      @AuthenticationPrincipal Integer userId) {
+      @AuthenticationPrincipal UUID userId) {
     List<ReviewSummaryResponse> responses = reviewService.getReceivedReviews(userId);
     return ResponseEntity.ok(responses);
   }
@@ -98,14 +99,14 @@ public class ReviewController {
   // 내가 작성한 리뷰 목록 조회 (편의 기능)
   @GetMapping("/my/written")
   public ResponseEntity<List<ReviewSummaryResponse>> getMyWrittenReviews(
-      @AuthenticationPrincipal Integer userId) {
+      @AuthenticationPrincipal UUID userId) {
     List<ReviewSummaryResponse> responses = reviewService.getWrittenReviews(userId);
     return ResponseEntity.ok(responses);
   }
 
   // 사용자 평점 통계 조회
   @GetMapping("/user/{userId}/rating")
-  public ResponseEntity<UserRatingResponse> getUserRating(@PathVariable Integer userId) {
+  public ResponseEntity<UserRatingResponse> getUserRating(@PathVariable UUID userId) {
     UserRatingResponse response = reviewService.getUserRating(userId);
     return ResponseEntity.ok(response);
   }

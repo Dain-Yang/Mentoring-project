@@ -8,8 +8,8 @@ import com.example.mentoring.match.dto.PostSearchCondition;
 import com.example.mentoring.match.dto.PostSummaryResponse;
 import com.example.mentoring.match.dto.UpdatePostRequest;
 import com.example.mentoring.match.service.PostService;
-import com.example.mentoring.member.entity.User;
 import jakarta.validation.Valid; // 필수 Import
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -93,7 +93,7 @@ public class PostController {
 
   // 특정 유저(멘토)가 작성한 게시글 목록 조회
   @GetMapping("/list/{userId}")
-  public ResponseEntity<List<PostSummaryResponse>> getPostsByUserId(@PathVariable Integer userId) {
+  public ResponseEntity<List<PostSummaryResponse>> getPostsByUserId(@PathVariable UUID userId) {
 
     List<PostSummaryResponse> responses = postService.getPostsByUserId(userId);
 

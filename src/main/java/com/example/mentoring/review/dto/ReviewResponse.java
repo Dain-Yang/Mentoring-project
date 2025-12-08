@@ -1,6 +1,7 @@
 package com.example.mentoring.review.dto;
 
 import com.example.mentoring.review.entity.Review;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,10 +17,10 @@ public class ReviewResponse {
   // 리뷰 응답 DTO
 
   private Integer id;
-  private Integer sessionId;
-  private Integer reviewerId;
+  private UUID  sessionId;
+  private UUID  reviewerId;
   private String reviewerNickname;
-  private Integer targetId;
+  private UUID targetId;
   private String targetNickname;
   private Integer rating;
   private String content;

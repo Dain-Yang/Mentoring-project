@@ -13,6 +13,7 @@ import com.example.mentoring.review.dto.UserRatingResponse;
 import com.example.mentoring.review.entity.Review;
 import com.example.mentoring.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class ReviewService {
   private final UserRepository userRepository;
 
   @Transactional
-  public ReviewResponse createReview(Integer sessionId, Integer userId, CreateReviewRequest request) {
+  public ReviewResponse createReview(UUID sessionId, UUID userId, CreateReviewRequest request) {
     User reviewer = getUser(userId);
     Session session = getSession(sessionId);
 
@@ -51,7 +52,7 @@ public class ReviewService {
   }
 
   @Transactional
-  public ReviewResponse updateReview(Integer reviewId, Integer userId, UpdateReviewRequest request) {
+  public ReviewResponse updateReview(Integer reviewId, UUID userId, UpdateReviewRequest request) {
     Review review = getReviewEntity(reviewId);
 
     if (!review.getReviewer().getId().equals(userId)) {
@@ -67,7 +68,7 @@ public class ReviewService {
   }
 
   @Transactional
-  public void deleteReview(Integer reviewId, Integer userId) {
+  public void deleteReview(Integer reviewId, UUID userId) {
     Review review = getReviewEntity(reviewId);
 
     if (!review.getReviewer().getId().equals(userId)) {
@@ -86,28 +87,28 @@ public class ReviewService {
     return ReviewResponse.from(getReviewEntity(reviewId));
   }
 
-  public List<ReviewResponse> getReviewsBySession(Integer sessionId) {
+  public List<ReviewResponse> getReviewsBySession(UUID sessionId) {
     Session session = getSession(sessionId);
     return reviewRepository.findBySessionOrderByCreatedAtDesc(session).stream()
         .map(ReviewResponse::from)
         .collect(Collectors.toList());
   }
 
-  public List<ReviewSummaryResponse> getReceivedReviews(Integer userId) {
+  public List<ReviewSummaryResponse> getReceivedReviews(UUID userId) {
     User user = getUser(userId);
     return reviewRepository.findByTargetOrderByCreatedAtDesc(user).stream()
         .map(ReviewSummaryResponse::from)
         .collect(Collectors.toList());
   }
 
-  public List<ReviewSummaryResponse> getWrittenReviews(Integer userId) {
+  public List<ReviewSummaryResponse> getWrittenReviews(UUID userId) {
     User user = getUser(userId);
     return reviewRepository.findByReviewerOrderByCreatedAtDesc(user).stream()
         .map(ReviewSummaryResponse::from)
         .collect(Collectors.toList());
   }
 
-  public UserRatingResponse getUserRating(Integer userId) {
+  public UserRatingResponse getUserRating(UUID userId) {
     User user = getUser(userId);
 
     Double averageRating = reviewRepository.calculateAverageRatingByTarget(user);
@@ -117,12 +118,12 @@ public class ReviewService {
   }
 
   // 내부 헬퍼 메서드
-  private User getUser(Integer userId) {
+  private User getUser(UUID userId) {
     return userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
   }
 
-  private Session getSession(Integer sessionId) {
+  private Session getSession(UUID sessionId) {
     return sessionRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("세션을 찾을 수 없습니다."));
   }
