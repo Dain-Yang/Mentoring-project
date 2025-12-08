@@ -1,6 +1,7 @@
 package com.example.mentoring.match.service;
 
 import com.example.mentoring.match.event.ApplicationApprovedEvent;
+import java.util.UUID;
 import org.springframework.context.ApplicationEventPublisher;
 import com.example.mentoring.match.dto.ApplicationResponse;
 import com.example.mentoring.match.dto.ApplicationSummaryResponse;
@@ -33,7 +34,7 @@ public class ApplicationService {
   private final ApplicationEventPublisher eventPublisher;
 
   @Transactional
-  public ApplicationResponse createApplication(Integer postId, Integer userId, CreateApplicationRequest request) {
+  public ApplicationResponse createApplication(Integer postId, UUID userId, CreateApplicationRequest request) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 
@@ -63,7 +64,7 @@ public class ApplicationService {
   }
 
   @Transactional
-  public ApplicationResponse updateApplication(Integer applicationId, Integer userId, UpdateApplicationRequest request) {
+  public ApplicationResponse updateApplication(UUID applicationId, UUID userId, UpdateApplicationRequest request) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 
@@ -79,7 +80,7 @@ public class ApplicationService {
   }
 
   @Transactional
-  public void deleteApplication(Integer applicationId, Integer userId) {
+  public void deleteApplication(UUID applicationId, UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 
@@ -93,14 +94,14 @@ public class ApplicationService {
     applicationRepository.delete(application);
   }
 
-  public ApplicationResponse getApplication(Integer applicationId) {
+  public ApplicationResponse getApplication(UUID applicationId) {
     Application application = applicationRepository.findById(applicationId)
         .orElseThrow(() -> new IllegalArgumentException("신청서를 찾을 수 없습니다."));
     return ApplicationResponse.from(application);
   }
 
   // 특정 모집글에 달린 신청서 목록 조회 (작성자=멘토만 가능)
-  public List<ApplicationResponse> getApplicationsByPost(Integer postId, Integer userId) {
+  public List<ApplicationResponse> getApplicationsByPost(Integer postId, UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 
@@ -118,7 +119,7 @@ public class ApplicationService {
   }
 
   // 내가 쓴 신청서 목록 조회 (마이페이지)
-  public List<ApplicationSummaryResponse> getMyApplications(Integer userId) {
+  public List<ApplicationSummaryResponse> getMyApplications(UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 
@@ -128,7 +129,7 @@ public class ApplicationService {
   }
 
   @Transactional
-  public ApplicationResponse approveApplication(Integer applicationId, Integer userId) {
+  public ApplicationResponse approveApplication(UUID applicationId, UUID userId) {
     User mentor = userRepository.findById(userId) // userId는 곧 승인을 시도하는 멘토의 ID
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 
@@ -147,7 +148,7 @@ public class ApplicationService {
   }
 
   @Transactional
-  public ApplicationResponse rejectApplication(Integer applicationId, Integer userId) {
+  public ApplicationResponse rejectApplication(UUID applicationId, UUID userId) {
     User mentor = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자(User)를 찾을 수 없습니다."));
 

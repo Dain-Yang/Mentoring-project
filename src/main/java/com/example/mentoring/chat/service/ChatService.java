@@ -9,6 +9,7 @@ import com.example.mentoring.chat.repository.ChatMessageRepository;
 import com.example.mentoring.chat.repository.ChatRoomRepository;
 import com.example.mentoring.match.event.SessionCreatedEvent;
 import com.example.mentoring.match.event.SessionCompletedEvent;
+import java.util.UUID;
 import org.springframework.context.event.EventListener;
 import com.example.mentoring.match.entity.Session;
 import com.example.mentoring.member.entity.User;
@@ -54,7 +55,7 @@ public class ChatService {
     return chatRoomRepository.save(chatRoom);
   }
 
-  public ChatRoomResponse getChatRoom(Integer sessionId, Integer userId) {
+  public ChatRoomResponse getChatRoom(UUID sessionId, UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
@@ -69,7 +70,7 @@ public class ChatService {
     return ChatRoomResponse.of(chatRoom, user, unreadCount);
   }
 
-  public List<ChatRoomResponse> getMyChatRooms(Integer userId) {
+  public List<ChatRoomResponse> getMyChatRooms(UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
@@ -82,7 +83,7 @@ public class ChatService {
   }
 
   @Transactional
-  public ChatMessageResponse sendMessage(Integer sessionId, Integer userId, ChatMessageRequest request) {
+  public ChatMessageResponse sendMessage(UUID sessionId, UUID userId, ChatMessageRequest request) {
     User sender = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
@@ -107,7 +108,7 @@ public class ChatService {
     return ChatMessageResponse.from(savedMessage);
   }
 
-  public List<ChatMessageResponse> getMessages(Integer sessionId, Integer userId) {
+  public List<ChatMessageResponse> getMessages(UUID sessionId, UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
@@ -124,7 +125,7 @@ public class ChatService {
   }
 
   @Transactional
-  public void markMessagesAsRead(Integer sessionId, Integer userId) {
+  public void markMessagesAsRead(UUID sessionId, UUID userId) {
     User reader = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
@@ -140,7 +141,7 @@ public class ChatService {
   }
 
   @Transactional
-  public void lockChatRoom(Integer sessionId) {
+  public void lockChatRoom(UUID sessionId) {
     ChatRoom chatRoom = chatRoomRepository.findById(sessionId)
         .orElseThrow(() -> new IllegalArgumentException("채팅방을 찾을 수 없습니다."));
     chatRoom.lock();

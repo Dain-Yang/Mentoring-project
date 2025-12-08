@@ -8,6 +8,7 @@ import com.example.mentoring.chat.service.RedisPublisher;
 import com.example.mentoring.member.entity.User;
 import com.example.mentoring.member.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,11 +34,11 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
   private final RedisPublisher redisPublisher;
 
   // sessionId -> Map<WebSocketSessionId, WebSocketSession>
-  private final Map<Integer, Map<String, WebSocketSession>> chatRooms = new ConcurrentHashMap<>();
+  private final Map<UUID, Map<String, WebSocketSession>> chatRooms = new ConcurrentHashMap<>();
 
   @Override
   public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-    Integer sessionId = (Integer) session.getAttributes().get("sessionId");
+    UUID sessionId = (UUID) session.getAttributes().get("sessionId");
     User user = getUserFromSession(session);
 
     if (user == null || sessionId == null) {
@@ -56,7 +57,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
   @Override
   protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-    Integer sessionId = (Integer) session.getAttributes().get("sessionId");
+    UUID sessionId = (UUID) session.getAttributes().get("sessionId");
     User user = getUserFromSession(session);
 
     if (user == null) return; // 방어 코드
@@ -72,7 +73,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
   @Override
   public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-    Integer sessionId = (Integer) session.getAttributes().get("sessionId");
+    UUID sessionId = (UUID) session.getAttributes().get("sessionId");
 
     if (sessionId != null) {
       log.info("WebSocket 연결 종료: sessionId={}", sessionId);
@@ -86,7 +87,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     }
   }
 
-  private void broadcastMessage(Integer sessionId, ChatMessageResponse message) {
+  private void broadcastMessage(UUID sessionId, ChatMessageResponse message) {
     Map<String, WebSocketSession> sessions = chatRooms.get(sessionId);
     if (sessions == null) return;
 

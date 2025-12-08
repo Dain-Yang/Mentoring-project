@@ -10,6 +10,7 @@ import com.example.mentoring.match.event.SessionCreatedEvent;
 import com.example.mentoring.match.repository.SessionRepository;
 import com.example.mentoring.member.entity.User;
 import com.example.mentoring.member.repository.UserRepository;
+import java.util.UUID;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import jakarta.persistence.EntityNotFoundException;
@@ -57,7 +58,7 @@ public class SessionService {
     return savedSession;
   }
 
-  public SessionResponse getSession(Integer sessionId, Integer userId) {
+  public SessionResponse getSession(UUID sessionId, UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
@@ -71,7 +72,7 @@ public class SessionService {
     return SessionResponse.from(session);
   }
 
-  public List<SessionSummaryResponse> getMySessions(Integer userId) {
+  public List<SessionSummaryResponse> getMySessions(UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
@@ -80,7 +81,7 @@ public class SessionService {
         .collect(Collectors.toList());
   }
 
-  public List<SessionSummaryResponse> getMySessionsByStatus(Integer userId, Session.SessionStatus status) {
+  public List<SessionSummaryResponse> getMySessionsByStatus(UUID userId, Session.SessionStatus status) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
@@ -92,7 +93,7 @@ public class SessionService {
   }
 
   @Transactional
-  public SessionResponse requestEndSession(Integer sessionId, Integer userId) {
+  public SessionResponse requestEndSession(UUID sessionId, UUID userId) {
     User requester = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
@@ -104,7 +105,7 @@ public class SessionService {
   }
 
   @Transactional
-  public SessionResponse confirmEndSession(Integer sessionId, Integer userId) {
+  public SessionResponse confirmEndSession(UUID sessionId, UUID userId) {
     User confirmer = userRepository.findById(userId)
         .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 

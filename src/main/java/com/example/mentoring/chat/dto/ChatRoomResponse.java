@@ -5,6 +5,7 @@ import com.example.mentoring.chat.entity.ChatRoom;
 import com.example.mentoring.match.entity.Session;
 import com.example.mentoring.member.entity.User;
 import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 public class ChatRoomResponse {
   // 채팅방 응답 DTO
 
-  private Integer sessionId;
+  private UUID sessionId;
   private Boolean isLocked;
   private String partnerNickname;
   private String lastMessage;

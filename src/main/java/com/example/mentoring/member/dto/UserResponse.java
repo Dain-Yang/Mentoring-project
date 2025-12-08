@@ -1,6 +1,7 @@
 package com.example.mentoring.member.dto;
 
 import com.example.mentoring.member.entity.User;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 public class UserResponse {
   // 사용자 응답 DTO
 
-  private Integer id;
+  private UUID id;
   private String email;
   private String nickname;
   private String role;

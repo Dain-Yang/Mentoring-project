@@ -1,6 +1,7 @@
 package com.example.mentoring.chat.dto;
 
 import com.example.mentoring.chat.entity.ChatMessage;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,9 +16,9 @@ import java.time.LocalDateTime;
 public class ChatMessageResponse {
   // 채팅 메시지 응답 DTO
 
-  private Integer id;
-  private Integer sessionId;
-  private Integer senderId;
+  private UUID id;
+  private UUID sessionId;
+  private UUID senderId;
   private String senderNickname;
   private String content;
   private LocalDateTime sendAt;

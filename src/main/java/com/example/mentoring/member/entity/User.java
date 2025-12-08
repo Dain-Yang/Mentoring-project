@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users") // DB 예약어 이슈로 변경
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,9 +36,11 @@ public class User {
     }
   }
 
+  // Integer id -> UUID id로 변경
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(columnDefinition = "BINARY(16)")
+  private UUID id;
 
   @Column(nullable = false, unique = true, length = 225)
   private String email;

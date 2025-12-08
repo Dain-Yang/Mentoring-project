@@ -6,6 +6,7 @@ import com.example.mentoring.member.dto.UserResponse;
 import com.example.mentoring.member.entity.User;
 import com.example.mentoring.member.repository.UserRepository;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class MemberService {
 
   // 사용자 정보 수정
   @Transactional
-  public UserResponse updateUser(Integer userId, UpdateUserRequest request) {
+  public UserResponse updateUser(UUID userId, UpdateUserRequest request) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다"));
 
@@ -68,7 +69,7 @@ public class MemberService {
   }
 
   // 사용자 정보 조회
-  public UserResponse getUserById(Integer userId) {
+  public UserResponse getUserById(UUID userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다"));
     return UserResponse.from(user);
@@ -76,7 +77,7 @@ public class MemberService {
 
   // 회원 탈퇴 (Soft Delete)
   @Transactional
-  public void withdraw(Integer userId, String password) {
+  public void withdraw(UUID userId, String password) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다"));
 

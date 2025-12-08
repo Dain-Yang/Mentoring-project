@@ -9,6 +9,7 @@ import com.example.mentoring.member.repository.MentorProfileRepository;
 import com.example.mentoring.member.repository.UserRepository;
 import com.example.mentoring.global.code.FieldCode;
 import com.example.mentoring.global.code.LevelCode;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,7 @@ public class MentorService {
 
   // 멘토 프로필 생성
   @Transactional
-  public MentorProfileResponse createMentorProfile(Integer userId, CreateMentorProfileRequest request) {
+  public MentorProfileResponse createMentorProfile(UUID userId, CreateMentorProfileRequest request) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다. ID: " + userId));
 
@@ -55,7 +56,7 @@ public class MentorService {
 
   // 멘토 프로필 수정
   @Transactional
-  public MentorProfileResponse updateMentorProfile(Integer userId, UpdateMentorProfileRequest request) {
+  public MentorProfileResponse updateMentorProfile(UUID userId, UpdateMentorProfileRequest request) {
     MentorProfile profile = mentorProfileRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("멘토 프로필이 존재하지 않습니다. ID: " + userId));
 
@@ -80,7 +81,7 @@ public class MentorService {
   }
 
   // 멘토 프로필 조회
-  public MentorProfileResponse getMentorProfile(Integer userId) {
+  public MentorProfileResponse getMentorProfile(UUID userId) {
     MentorProfile profile = mentorProfileRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("멘토 프로필이 존재하지 않습니다. ID: " + userId));
     return MentorProfileResponse.from(profile);

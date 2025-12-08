@@ -6,6 +6,7 @@ import com.example.mentoring.match.dto.SessionResponse;
 import com.example.mentoring.match.dto.SessionSummaryResponse;
 import com.example.mentoring.match.entity.Session;
 import com.example.mentoring.match.service.SessionService;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class SessionController {
   // 세션 상세 조회
   @GetMapping("/{sessionId}")
   public ResponseEntity<SessionResponse> getSession(
-      @PathVariable Integer sessionId) {
+      @PathVariable UUID sessionId) {
 
     CustomUserDetails currentUser = authService.getCurrentUser();
     SessionResponse response = sessionService.getSession(sessionId, currentUser.getUserId());
@@ -33,13 +34,13 @@ public class SessionController {
   // 내 세션 목록 조회
   @GetMapping("/my")
   public ResponseEntity<List<SessionSummaryResponse>> getMySessions(
-      @RequestParam(required = false) Integer status) {
+      @RequestParam(required = false) Session.SessionStatus status) {
 
     CustomUserDetails currentUser = authService.getCurrentUser();
 
     if (status != null) {
-      Session.SessionStatus sessionStatus = Session.SessionStatus.fromCode(status);
-      List<SessionSummaryResponse> responses = sessionService.getMySessionsByStatus(currentUser.getUserId(), sessionStatus);
+      // fromCode() 호출 로직 제거
+      List<SessionSummaryResponse> responses = sessionService.getMySessionsByStatus(currentUser.getUserId(), status);
       return ResponseEntity.ok(responses);
     }
 
@@ -50,7 +51,7 @@ public class SessionController {
   // 멘토링 종료 요청
   @PatchMapping("/{sessionId}/request-end")
   public ResponseEntity<SessionResponse> requestEndSession(
-      @PathVariable Integer sessionId) {
+      @PathVariable UUID sessionId) {
 
     CustomUserDetails currentUser = authService.getCurrentUser();
     SessionResponse response = sessionService.requestEndSession(sessionId, currentUser.getUserId());
@@ -60,7 +61,7 @@ public class SessionController {
   // 멘토링 종료 확인
   @PatchMapping("/{sessionId}/confirm-end")
   public ResponseEntity<SessionResponse> confirmEndSession(
-      @PathVariable Integer sessionId) {
+      @PathVariable UUID sessionId) {
 
     CustomUserDetails currentUser = authService.getCurrentUser();
     SessionResponse response = sessionService.confirmEndSession(sessionId, currentUser.getUserId());

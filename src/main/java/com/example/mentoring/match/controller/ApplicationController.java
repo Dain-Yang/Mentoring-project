@@ -8,6 +8,7 @@ import com.example.mentoring.match.dto.CreateApplicationRequest;
 import com.example.mentoring.match.dto.UpdateApplicationRequest;
 import com.example.mentoring.match.service.ApplicationService;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 
@@ -45,7 +46,7 @@ public class ApplicationController {
   // 신청서 수정
   @PutMapping("/{applicationId}")
   public ResponseEntity<ApplicationResponse> updateApplication(
-      @PathVariable Integer applicationId,
+      @PathVariable UUID applicationId,
       @Valid @RequestBody UpdateApplicationRequest request) {
 
     CustomUserDetails currentUser = authService.getCurrentUser();
@@ -57,7 +58,7 @@ public class ApplicationController {
   // 신청서 삭제
   @DeleteMapping("/{applicationId}")
   public ResponseEntity<Void> deleteApplication(
-      @PathVariable Integer applicationId) {
+      @PathVariable UUID applicationId) {
 
     CustomUserDetails currentUser = authService.getCurrentUser();
 
@@ -68,7 +69,7 @@ public class ApplicationController {
   // 신청서 상세 조회
   @GetMapping("/{applicationId}")
   public ResponseEntity<ApplicationResponse> getApplication(
-      @PathVariable Integer applicationId) {
+      @PathVariable UUID applicationId) {
     ApplicationResponse response = applicationService.getApplication(applicationId);
     return ResponseEntity.ok(response);
   }
@@ -97,7 +98,7 @@ public class ApplicationController {
   // 신청 승인 (멘토 전용)
   @PatchMapping("/mentor/{applicationId}/approve")
   public ResponseEntity<ApplicationResponse> approveApplication(
-      @PathVariable Integer applicationId) {
+      @PathVariable UUID applicationId) {
 
     CustomUserDetails currentUser = authService.getCurrentUser();
 
@@ -108,7 +109,7 @@ public class ApplicationController {
   // 신청 거절 (멘토 전용)
   @PatchMapping("/mentor/{applicationId}/reject")
   public ResponseEntity<ApplicationResponse> rejectApplication(
-      @PathVariable Integer applicationId) {
+      @PathVariable UUID applicationId) {
 
     CustomUserDetails currentUser = authService.getCurrentUser();
 

@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,42 +30,27 @@ import java.time.LocalDateTime;
 @Builder
 public class Session {
 
+  @Getter
   public enum SessionStatus {
-    PROGRESS(0, "멘토링 진행 중"),
-    END_REQUESTED(1, "멘토링 종료 요청"),
-    COMPLETED(2, "멘토링 종료");
+    PROGRESS("멘토링 진행 중"),
+    END_REQUESTED("멘토링 종료 요청"),
+    COMPLETED("멘토링 종료");
 
-    private final int code;
     private final String description;
 
-    SessionStatus(int code, String description) {
-      this.code = code;
+    SessionStatus(String description) {
       this.description = description;
-    }
-
-    public int getCode() {
-      return code;
-    }
-
-    public String getDescription() {
-      return description;
-    }
-
-    public static SessionStatus fromCode(int code) {
-      for (SessionStatus status : SessionStatus.values()) {
-        if (status.code == code) {
-          return status;
-        }
-      }
-      throw new IllegalArgumentException("유효하지 않은 세션 상태 코드입니다: " + code);
     }
   }
 
+  // Integer -> UUID 변경
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(columnDefinition = "BINARY(16)")
+  private UUID id;
 
-  @Enumerated(EnumType.ORDINAL)
+  // 순서 대신 STRING으로 관리
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   @Builder.Default
   private SessionStatus status = SessionStatus.PROGRESS;

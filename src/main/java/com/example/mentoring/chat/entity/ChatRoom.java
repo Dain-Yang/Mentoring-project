@@ -11,6 +11,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +31,7 @@ import java.util.List;
 public class ChatRoom {
 
   @Id
-  private Integer sessionId;
+  private UUID sessionId;
 
   @OneToOne(fetch = FetchType.LAZY)
   @MapsId

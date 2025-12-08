@@ -7,6 +7,7 @@ import com.example.mentoring.chat.dto.ChatMessageResponse;
 import com.example.mentoring.chat.dto.ChatRoomResponse;
 import com.example.mentoring.chat.service.ChatService;
 import com.example.mentoring.member.entity.User;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,7 +40,7 @@ public class ChatController {
   // 특정 채팅방 조회
   @GetMapping("/{sessionId}")
   public ResponseEntity<ChatRoomResponse> getChatRoom(
-      @PathVariable Integer sessionId) {
+      @PathVariable UUID sessionId) {
 
     CustomUserDetails currentUser = authService.getCurrentUser();
     ChatRoomResponse response = chatService.getChatRoom(sessionId, currentUser.getUserId());
@@ -49,7 +50,7 @@ public class ChatController {
   // 채팅 메시지 목록 조회
   @GetMapping("/{sessionId}/messages")
   public ResponseEntity<List<ChatMessageResponse>> getMessages(
-      @PathVariable Integer sessionId) {
+      @PathVariable UUID sessionId) {
 
     CustomUserDetails currentUser = authService.getCurrentUser();
     List<ChatMessageResponse> responses = chatService.getMessages(sessionId, currentUser.getUserId());
@@ -59,7 +60,7 @@ public class ChatController {
   // 메시지 읽음 처리
   @PatchMapping("/{sessionId}/read")
   public ResponseEntity<Void> markMessagesAsRead(
-      @PathVariable Integer sessionId) {
+      @PathVariable UUID sessionId) {
 
     CustomUserDetails currentUser = authService.getCurrentUser();
     chatService.markMessagesAsRead(sessionId, currentUser.getUserId());

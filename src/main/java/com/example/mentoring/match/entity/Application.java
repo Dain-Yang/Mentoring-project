@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,17 +37,18 @@ public class Application {
   @Getter
   @RequiredArgsConstructor
   public enum ApplicationStatus {
-    PENDING(0, "신청 접수"),
-    APPROVED(1, "신청 승인"),
-    REJECTED(2, "신청 거절");
+    PENDING("신청 접수"),
+    APPROVED("신청 승인"),
+    REJECTED("신청 거절");
 
-    private final int code;
     private final String description;
   }
 
+  // Session과 통일성을 위해 UUID로 변경
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(columnDefinition = "BINARY(16)")
+  private UUID id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id", nullable = false)
@@ -59,8 +61,8 @@ public class Application {
   @Column(nullable = false, columnDefinition = "TEXT")
   private String content;
 
-  // Enum 순서 변경 금지 (0:PENDING, 1:APPROVED, 2:REJECTED)
-  @Enumerated(EnumType.ORDINAL)
+  // 순서 대신 STRING으로 관리
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   @Builder.Default
   private ApplicationStatus status = ApplicationStatus.PENDING;

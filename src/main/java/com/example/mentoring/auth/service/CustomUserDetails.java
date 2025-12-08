@@ -1,6 +1,7 @@
 package com.example.mentoring.auth.service;
 
 import com.example.mentoring.member.entity.User;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -53,7 +54,7 @@ public class CustomUserDetails implements UserDetails {
     return user.getIsActive();
   }
 
-  public Integer getUserId() {
+  public UUID getUserId() {
     return user.getId();
   }
 

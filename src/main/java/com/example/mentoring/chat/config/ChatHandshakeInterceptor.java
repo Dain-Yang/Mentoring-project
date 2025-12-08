@@ -1,6 +1,7 @@
 package com.example.mentoring.chat.config;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.UUID;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -23,12 +24,14 @@ public class ChatHandshakeInterceptor implements HandshakeInterceptor {
       // URL에서 PathVariable (sessionId) 추출
       String path = httpRequest.getRequestURI();
       String[] pathSegments = path.split("/");
-      String sessionId = pathSegments[pathSegments.length - 1];
+      String sessionIdString = pathSegments[pathSegments.length - 1];
 
       try {
-        attributes.put("sessionId", Integer.parseInt(sessionId));
-      } catch (NumberFormatException e) {
-        return false; // 세션 ID가 숫자가 아니면 연결 거부
+        UUID sessionId = UUID.fromString(sessionIdString);
+        attributes.put("sessionId", sessionId);
+      } catch (IllegalArgumentException e) { // UUID 형식이 잘못되었을 때 발생하는 예외
+        // 세션 ID 형식이 유효하지 않으면 연결 거부
+        return false;
       }
 
       // Spring Security의 인증 정보를 WebSocket 세션으로 전달

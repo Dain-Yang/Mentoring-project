@@ -1,7 +1,7 @@
 package com.example.mentoring.match.dto;
 
 import com.example.mentoring.match.entity.Session;
-import com.example.mentoring.match.entity.Session.SessionStatus;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,23 +16,21 @@ import java.time.LocalDateTime;
 public class SessionResponse {
   // 세션 응답 DTO
 
-  private Integer id;
-  private SessionStatus status;
+  private UUID sessionId;
   private String statusDescription;
   private LocalDateTime startDate;
   private LocalDateTime endDate;
   private Boolean mentorConfirm;
   private Boolean menteeConfirm;
-  private Integer mentorId;
+  private UUID mentorId;
   private String mentorNickname;
-  private Integer menteeId;
+  private UUID menteeId;
   private String menteeNickname;
-  private Integer applicationId;
+  private UUID applicationId;
 
   public static SessionResponse from(Session session) {
     return SessionResponse.builder()
-        .id(session.getId())
-        .status(session.getStatus())
+        .sessionId(session.getId())
         .statusDescription(session.getStatus().getDescription())
         .startDate(session.getStartDate())
         .endDate(session.getEndDate())

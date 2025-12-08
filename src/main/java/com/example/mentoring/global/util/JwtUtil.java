@@ -8,6 +8,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,7 @@ public class JwtUtil {
   }
 
   // Access Token 생성
-  public String createAccessToken(Integer userId, String email, User.Role role) {
+  public String createAccessToken(UUID userId, String email, User.Role role) {
     Date now = new Date();
     Date validity = new Date(now.getTime() + accessTokenValidityInMilliseconds);
 
@@ -50,7 +51,7 @@ public class JwtUtil {
   }
 
   // Refresh Token 생성
-  public String createRefreshToken(Integer userId) {
+  public String createRefreshToken(UUID userId) {
     Date now = new Date();
     Date validity = new Date(now.getTime() + refreshTokenValidityInMilliseconds);
 

@@ -1,6 +1,7 @@
 package com.example.mentoring.member.dto;
 
 import com.example.mentoring.member.entity.MentorProfile;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,11 +14,13 @@ import lombok.NoArgsConstructor;
 public class MentorProfileResponse {
   // 멘토 프로필 응답 DTO
 
-  private Integer userId;
+  private UUID userId;
   private String mentorBio;
   private Double avgRating;
+  private Long reviewCount;
   private Integer careerYears;
   private String company;
+
   // SystemCode의 display_name 반환
   private String fieldCode;
   private String levelCode;
@@ -28,6 +31,7 @@ public class MentorProfileResponse {
         .mentorBio(profile.getMentorBio())
         // BigDecimal -> Double 변환 및 null 처리 로직
         .avgRating(profile.getAvgRating() != null ? profile.getAvgRating().doubleValue() : 0.0)
+        .reviewCount(profile.getReviewCount())
         .careerYears(profile.getCareerYears())
         .company(profile.getCompany())
         .fieldCode(profile.getFieldCode().getDisplayName())

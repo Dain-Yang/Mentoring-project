@@ -3,6 +3,7 @@ package com.example.mentoring.match.dto;
 import com.example.mentoring.match.entity.Application;
 import com.example.mentoring.match.entity.Application.ApplicationStatus;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,14 +16,14 @@ import lombok.NoArgsConstructor;
 public class ApplicationResponse {
   // 신청서 목록 (상세) 응답 DTO
 
-  private Integer id;
+  private UUID id;
 
   // 어떤 글에 대한 신청인지
   private Integer postId;
   private String postTitle;
 
   // 누가 신청했는지 (멘토가 확인)
-  private Integer menteeId;
+  private UUID menteeId;
   private String menteeNickname;
 
   private String content;

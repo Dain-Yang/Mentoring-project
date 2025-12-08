@@ -4,6 +4,7 @@ import com.example.mentoring.match.entity.Application;
 import com.example.mentoring.match.entity.Session;
 import com.example.mentoring.match.entity.Session.SessionStatus;
 import com.example.mentoring.member.entity.User;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SessionRepository extends JpaRepository<Session, Integer> {
+public interface SessionRepository extends JpaRepository<Session, UUID> {
 
   // Application으로 세션 조회
   Optional<Session> findByApplication(Application application);

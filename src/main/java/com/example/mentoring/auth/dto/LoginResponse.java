@@ -1,5 +1,6 @@
 package com.example.mentoring.auth.dto;
 
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class LoginResponse {
   @Builder.Default
   private String tokenType = "Bearer";
 
-  private Integer userId;
+  private UUID userId;
   private String email;
   private String nickname;
   private String role;
